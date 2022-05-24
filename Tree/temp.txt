@@ -1,0 +1,54 @@
+https://workat.tech/courses/binary-trees-ibe1itnvu2by/practice-problems-9xsbj09kaf06/3ee69f0fe241
+
+/* This is the Node class definition
+
+class Node {
+public:
+    Node* left;
+    Node* right;
+    int data;
+
+    Node(int data) {
+        this->left = NULL;
+        this->right = NULL;
+        this->data = data;
+    }
+};
+*/
+
+vector<int> topView(Node* root) 
+{
+    // add your logic here
+	queue<pair<Node*, pair<int, int>>> bucket;
+	map<int, map<int, multiset<int>>> resmap;
+	vector<int> res;
+	
+	bucket.push({root, {0, 0}});
+	
+	while (!bucket.empty())
+	{
+		auto temp = bucket.front();
+		bucket.pop();
+		
+		int x = temp.second.first;
+		int y = temp.second.second;
+		
+		if (abs(x) == abs(y))
+			resmap[x][y].insert(temp.first->data);
+		
+		if (temp.first->left)
+			bucket.push({temp.first->left, {x - 1, y + 1}});
+		
+		if (temp.first->right)
+			bucket.push({temp.first->right, {x + 1, y + 1}});
+	}
+	
+	for (auto &pr : resmap)
+	{
+		for (auto &pr2 : pr.second)
+		{
+			res.insert(res.end(), pr2.second.begin(), pr2.second.end());
+		}
+	}
+	return res;
+}
