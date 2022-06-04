@@ -29,7 +29,9 @@ int main()
 
     // cout << hasValidSubset(3, 8, test, dp2) << endl;
 
-    cout << canPartition(test) << endl;
+    // cout << canPartition(test) << endl;
+
+    
     
     return 0;
 }

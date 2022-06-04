@@ -267,3 +267,125 @@ bool canPartition(vector<int>& nums)
 
     return hasValidSubset(nums.size() - 1, target, nums, dp);
 }
+
+
+int knapsack(int index, vector<int> weight, vector<int> value, int maxWeight, vector<vector<int>> &dp)
+{
+    if (index == 0)
+    {
+        if (weight[index] <= maxWeight)
+            return weight[index];
+        
+        else 
+            return 0;
+    }
+
+    if (dp[index][maxWeight] != -1)
+        return dp[index][maxWeight];
+
+    int not_pick = knapsack(index - 1, weight, value, maxWeight, dp);
+    int pick = INT_MIN;
+    if (weight[index] <= maxWeight)
+        pick = value[index] + knapsack(index - 1, weight, value, maxWeight - weight[index], dp);
+
+    return dp[index][maxWeight] = max(pick, not_pick);
+}
+
+
+int coin_change(int index, int amount, vector<int> &coins, vector<vector<int>> &dp)
+{
+    if (index == 0)
+        return (amount % coins[0] == 0);
+
+    int not_pick = coin_change(index - 1, amount, coins, dp);
+    int pick = 0;
+    if (coins[index] <= amount)
+        pick = coin_change(index, amount - coins[index], coins, dp);
+
+    return pick + not_pick;
+}
+
+
+int unboundedKnapsack(int index, int capacity, vector<int> &profit, vector<int> &weight, vector<vector<int>> &dp)
+{
+    if (index == 0)
+        return (capacity / weight[0]) * profit[index];
+    
+    if (dp[index][capacity] != -1)
+        return dp[index][capacity];
+    
+    int not_pick = unboundedKnapsack(index - 1, capacity, profit, weight, dp);
+    int pick = INT_MIN;
+    if (weight[index] <= capacity)
+        pick = profit[index] + unboundedKnapsack(index, capacity - weight[index], profit, weight, dp);
+    
+    return dp[index][capacity] = max(pick, not_pick);
+}
+
+int unboundedKnapsack_table(int n, int w, vector<int> &profit, vector<int> &weight)
+{
+    vector<vector<int>> dp(profit.size(), vector<int> (w + 1, 0));
+    
+    for (int capacity = 0; capacity <= w; capacity++)
+    {
+        dp[0][capacity] = (capacity / weight[0]) * profit[0];
+    }
+    
+    for (int index = 1; index < profit.size(); index++)
+    {
+        for (int capacity = 0; capacity <= w; capacity++)
+        {
+            int not_pick = dp[index - 1][capacity];
+            int pick = INT_MIN;
+            if (weight[index] <= capacity)
+                pick = profit[index] + dp[index][capacity - weight[index]];
+
+            dp[index][capacity] = max(pick, not_pick);
+        }
+    }
+    
+    return dp[profit.size() - 1][w];
+}
+
+
+int maximumProfit(int index, int capacity, vector<int> prices, vector<vector<int>> &dp)
+{
+	
+	if (index == 0)
+		return capacity * prices[index];
+	
+	if (dp[index][capacity] != -1)
+		return dp[index][capacity];
+	
+	int not_pick = maximumProfit(index - 1, capacity, prices, dp);
+	int pick = INT_MIN;
+	if (index + 1 <= capacity)
+		pick = prices[index] + maximumProfit(index, capacity - (index + 1), prices, dp);
+	
+	return dp[index][capacity] = max(pick, not_pick);
+}
+
+int maximumProfit_table(int n, vector<int> prices) 
+{
+	vector<vector<int>> dp(prices.size(), vector<int> (n + 1, -1));
+	
+	for (int capacity = 0; capacity <= n; capacity++)
+	{
+		dp[0][capacity] = capacity * prices[0];
+	}
+	
+	for (int index = 1; index < prices.size(); index++)
+	{
+		for (int capacity = 0; capacity <= n; capacity++)
+		{
+			int not_pick = dp[index - 1][capacity];
+			int pick = INT_MIN;
+
+			if (index + 1 <= capacity)
+				pick = prices[index] + dp[index][capacity - (index + 1)];
+
+			dp[index][capacity] = max(pick, not_pick);
+		}
+	}
+	return dp[prices.size() - 1][n];
+}

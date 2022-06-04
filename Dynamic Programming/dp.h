@@ -23,3 +23,17 @@ int cherryPickup(int i, int j1, int j2, vector<vector<int>> &grid, vector<vector
 bool hasValidSubset(int index, int target, vector<int> &arr, vector<vector<int>> &dp);
 
 bool canPartition(vector<int>& nums); //https://leetcode.com/problems/partition-equal-subset-sum/
+
+int knapsack(int index, vector<int> weight, vector<int> value, int maxWeight, vector<vector<int>> &dp); //https://bit.ly/3KHpP3v
+
+int knapsack_table(int );
+
+int coin_change(int index, int amount, vector<int> &coins, vector<vector<int>> &dp); //https://leetcode.com/problems/coin-change-2/submissions/
+
+int unboundedKnapsack(int index, int capacity, vector<int> &profit, vector<int> &weight, vector<vector<int>> &dp); //https://bit.ly/3IvPdXS
+
+int unboundedKnapsack_table(int n, int w, vector<int> &profit, vector<int> &weight);
+
+int maximumProfit(int index, int capacity, vector<int> prices, vector<vector<int>> &dp); //https://workat.tech/courses/dynamic-programming-fglj0mglee3j/practice-problems-yc2idsnnw3nw/26e281a03473
+
+int maximumProfit_table(int n, vector<int> prices);
