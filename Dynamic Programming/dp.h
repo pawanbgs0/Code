@@ -37,3 +37,9 @@ int unboundedKnapsack_table(int n, int w, vector<int> &profit, vector<int> &weig
 int maximumProfit(int index, int capacity, vector<int> prices, vector<vector<int>> &dp); //https://workat.tech/courses/dynamic-programming-fglj0mglee3j/practice-problems-yc2idsnnw3nw/26e281a03473
 
 int maximumProfit_table(int n, vector<int> prices);
+
+int longest_common_subsequence(int index1, int index2, string s1, string s2, vector<vector<int>> &dp);
+
+int longest_common_subsequence_table(string s1, string s2);
+
+string longest_common_subsequence_display(string s1, string s2);

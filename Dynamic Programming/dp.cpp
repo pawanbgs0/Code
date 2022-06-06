@@ -389,3 +389,91 @@ int maximumProfit_table(int n, vector<int> prices)
 	}
 	return dp[prices.size() - 1][n];
 }
+
+
+int longest_common_subsequence(int index1, int index2, string s1, string s2, vector<vector<int>> &dp)
+{
+    if (index1 == 0 || index2 == 0)
+        return 0;
+
+    if (dp[index1][index2] != -1)
+        return dp[index1][index2];
+
+    if (s1[index1 - 1] == s2[index2 - 1])
+        return dp[index1][index2] = 1 + longest_common_subsequence(index1 - 1, index2 - 1, s1, s2, dp);
+
+    return dp[index1][index2] = max(longest_common_subsequence(index1 - 1, index2, s1, s2, dp), longest_common_subsequence(index1, index2 - 1, s1, s2, dp));
+}
+
+int longest_common_subsequence_table(string s1, string s2)
+{
+    vector<vector<int>> dp(s1.length() + 1, vector<int> (s2.length() + 1, 0));
+
+    for (int index2 = 0; index2 <= s2.length(); index2++)
+    {
+        dp[0][index2] = 0;
+    }
+
+    for (int index1 = 0; index1 <= s1.length(); index1++)
+    {
+        dp[index1][0] = 0;
+    }
+
+    for (int index1 = 1; index1 <= s1.length(); index1++)
+    {
+        for (int index2 = 1; index2 <= s2.length(); index2++)
+        {
+            if (s1[index1 - 1] == s2[index2 - 1])
+                dp[index1][index2] = 1 + dp[index1 - 1][index2 - 1];
+
+            else
+                dp[index1][index2] = max(dp[index1 - 1][index2], dp[index1][index2 - 1]);
+        }
+    }
+
+    return dp[s1.length()][s2.length()];
+}
+
+string longest_common_subsequence_display(string s1, string s2)
+{
+    vector<vector<int>> dp(s1.length() + 1, vector<int> (s2.length() + 1, 0));
+
+    for (int index2 = 0; index2 <= s2.length(); index2++)
+    {
+        dp[0][index2] = 0;
+    }
+
+    for (int index1 = 0; index1 <= s1.length(); index1++)
+    {
+        dp[index1][0] = 0;
+    }
+
+    for (int index1 = 1; index1 <= s1.length(); index1++)
+    {
+        for (int index2 = 1; index2 <= s2.length(); index2++)
+        {
+            if (s1[index1 - 1] == s2[index2 - 1])
+                dp[index1][index2] = 1 + dp[index1 - 1][index2 - 1];
+
+            else
+                dp[index1][index2] = max(dp[index1 - 1][index2], dp[index1][index2 - 1]);
+        }
+    }
+
+    // Copied the above function code to get the dp table;
+    string ans = "";
+    int index1 = s1.length();
+    int index2 = s2.length();
+    int strIndex = dp[s1.length()][s2.length()] - 1;
+
+    for (int i = 0; i < dp[s1.length()][s2.length()]; i++) //initialized a dummy string with the resultant size;
+    {
+        ans += '$';
+    }
+
+    while (index1 > 0 && index2 > 0)
+    {
+        
+    }
+
+}
