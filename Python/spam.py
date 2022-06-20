@@ -1,17 +1,11 @@
-import pyautogui
-import time
 
-time.sleep(5)
-
-while True:
-    pyautogui.write('INDIA')
-    pyautogui.press('return') 
-    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
 
 
 
 
+        
 
 distance = 50
 

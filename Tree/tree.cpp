@@ -172,6 +172,8 @@ void Tree::preinpost()
     vector<int> pre, in, post;
     pair<Node*, int> temp;
 
+    temp.first = this->root;
+    temp.second = 1;
     bucket.push(temp);
 
     while (!bucket.empty())
@@ -184,6 +186,13 @@ void Tree::preinpost()
             pre.push_back(temp.first->data);
             temp.second = 2;
             bucket.push(temp);
+
+            if (temp.first->left)
+            {
+                temp.first = temp.first->left;
+                temp.second = 1;
+                bucket.push(temp);
+            }
         }
 
         else if (temp.second == 2)
@@ -191,13 +200,41 @@ void Tree::preinpost()
             in.push_back(temp.first->data);
             temp.second = 3;
             bucket.push(temp);
+
+            if (temp.first->right)
+            {
+                temp.first = temp.first->right;
+                temp.second = 1;
+                bucket.push(temp);
+            }
         }
 
         else 
         {
             post.push_back(temp.first->data);
         }
-    }     
+    }   
+
+    cout << "Pre-Order: ";
+    for (int i = 0; i < in.size(); i++)
+    {
+        cout << pre[i] << " ";
+    }
+    cout << endl; 
+
+    cout << "In-Order: ";
+    for (int i = 0; i < in.size(); i++)
+    {
+        cout << in[i] << " ";
+    }
+    cout << endl;  
+
+    cout << "Post-Order: ";
+    for (int i = 0; i < in.size(); i++)
+    {
+        cout << post[i] << " ";
+    }
+    cout << endl; 
 }
 
 int Tree::max_depth_helper(Node* ptroot)

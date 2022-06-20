@@ -20,11 +20,16 @@ int main()
     btree.PreInTree(preorder, inorder);
     // btree.preorder();
     // btree.inorder();
-    btree.boundryPrint();
-    btree.vertical_traversal();
-    btree.top_view();
-    btree.bottom_view();
-    btree.right_view();
-    btree.left_view();
+    // btree.boundryPrint();
+    // btree.vertical_traversal();
+    // btree.top_view();
+    // btree.bottom_view();
+    // btree.right_view();
+    // btree.left_view();
+    btree.preinpost();
+
+
+
+    
     return 0;
 }
