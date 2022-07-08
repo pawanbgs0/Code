@@ -1,65 +1,68 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
-
-string greatestLetter(string s) 
+int helper(vector<vector<int>> &matrix, int index1, int index2, vector<vector<int>> &dp)
 {
-    int start = 0, mid;
-    string res = "";
-
-    if (s.length() == 0)
-        return res;
-
-    sort(s.begin(), s.end());
-
-    cout << s << endl;
-
-    for (int i = 0; i < s.length(); i++)
+    int left, up;
+    if (index1 == 0 || index2 == 0)
     {
-        if (s[i] >= 97 && s[i] <= 122)
+        if (matrix[index1][index2] != -1)
+            return 1;
+        
+        return 0;
+    }
+    
+    if (dp[index1][index2] != -1)
+        return dp[index1][index2];
+    
+    if (matrix[index1][index2] != -1)
+    {
+        left = 1 + helper(matrix, index1 - 1, index2, dp);
+        up = 1 + helper(matrix, index1, index2 - 1, dp);
+    }
+    
+    return left + up;
+}
+
+int main() 
+{
+    int A = 5, B = 2;
+    int mid = (A - 1) / 2;
+    
+    vector<vector<int>> dp(A, vector<int> (A, -1));
+    vector<vector<int>> matrix(A, vector<int> (A, 0));
+    
+    
+    for (int i = mid - B; i <= mid + B; i++)
+    {
+        matrix[mid][i] = -1;
+    }
+    
+    for (int i = mid - B; i <= mid + B; i++)
+    {
+        matrix[i][mid] = -1;
+    }
+    
+    for (int i = mid - B; i <= mid + B; i++)
+    {
+        for (int j = mid - B; j <= mid + B; j++)
         {
-            mid = i;
-            break;
+            if (i == j)
+                matrix[i][j] = -1;
+            
+            if (i + j == A - 1)
+                matrix[i][j] = -1;
         }
     }
     
-    cout << "mid is " << s[mid] << endl;
 
-    while (start < mid && mid < s.length())
+    for (int i = 0; i < A; i++)
     {
-        if (abs(s[start] - s[mid]) == 32)
+        for (int j = 0; j < A; j++)
         {
-            res = s[start];
-            start++;
-            mid++;
-            
-            cout << 1  << "start++ and mid++" << " res is " << res << endl; 
+            cout << matrix[i][j] << " ";
         }
-
-        else if (abs(s[start] - s[mid]) > 32)
-        {
-            start++;
-            cout << 2 << " res is start++ " << res << endl; 
-        }
-
-        else 
-        {
-            mid++;
-            cout << 3 << " res is mid++ " << s[mid] << endl; 
-        }
-    }    
-
-    return res;    
-}
-
-
-
-int main()
-{
-    string s = "abzcdCEEEEZ";
-    cout << greatestLetter(s);
+        cout << endl;
+    }
     return 0;
 }
-
-

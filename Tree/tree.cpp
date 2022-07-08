@@ -675,3 +675,38 @@ bool Tree::is_symmetrical()
     
     return is_symmetrical_helper(root->left, root->right);
 }
+
+
+Heap::Heap()
+{
+    this->index = -1;
+}
+
+Heap::Heap(int size)
+{
+    this->index = -1;
+    this->size = size;
+    this->arr.resize(size);
+}
+
+void Heap::add_heap(int value)
+{
+    int child, parent;
+
+    if (index == size - 1)
+        return;
+    
+    this->arr[++index] = value;
+    child = index;
+
+    while (child != 0)
+    {
+        parent = (child - 1) / 2;
+
+        if (arr[parent] < arr[child])
+        {
+            swap(arr[parent], arr[child]);
+            child = parent;
+        }
+    }
+}

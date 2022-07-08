@@ -19,6 +19,7 @@ class Node
 class Tree
 {
     Node* root;
+
     void preorder_helper(Node* ptroot);
     void inorder_helper(Node* ptroot);
     void postorder_helper(Node* ptroot);
@@ -48,4 +49,16 @@ class Tree
         void right_view();
         void left_view();
         bool is_symmetrical();
+};
+
+class Heap
+{
+    vector<int> arr;
+    int size;
+    int index;
+    
+    public:
+        Heap();
+        Heap(int size);
+        void add_heap(int value);
 };
