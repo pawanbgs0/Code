@@ -184,3 +184,155 @@ bool Graph::isCyclic_dfs()
 	}
 	return false;
 }
+
+bool Graph::is_bipartite_bfs(int startIndex, vector<int> &coloured)
+{
+    queue<item> line;
+
+    coloured[startIndex] = 1;
+    line.push(startIndex);
+
+    while (!line.empty())
+    {
+        int node = line.front();
+        line.pop();
+
+        for (int i = 0; i < adj_list[node].size(); i++)
+        {
+            if (coloured[adj_list[node][i]] == -1)
+            {
+                coloured[adj_list[node][i]] = 1 - coloured[node];
+                line.push(adj_list[node][i]);
+            }
+            else 
+            {
+                if (coloured[node] == coloured[adj_list[node][i]])
+                    return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool Graph::is_bipartit_bfs_component()
+{
+    vector<int> coloured(no_vertex, -1);
+
+    for (int i = 0; i < no_vertex; i++)
+    {
+        if (coloured[i] == -1)
+        {
+            if (!is_bipartite_bfs(i, coloured))
+                return false;
+        }
+    }
+    return true;
+}
+
+bool Graph::detect_cycle_directed_dfs(vector<bool> &visited, vector<bool> &visited_dfs, int startIndex)
+{
+    visited[startIndex] = true;
+    visited_dfs[startIndex] = true;
+
+    for (auto it : adj_list[startIndex])
+    {
+        if (!visited[it])
+        {
+            if (detect_cycle_directed_dfs(visited, visited_dfs, it))
+                return true;
+        }
+        else 
+        {
+            if (visited[it] == visited_dfs[it])
+                return true;
+        }
+    }
+
+    visited_dfs[startIndex] = false;
+    return false;
+}
+
+bool Graph::detect_cycle_directed_dfs_comp()
+{
+    vector<bool> visited(no_vertex, false);
+    vector<bool> visited_dfs(no_vertex, false);
+
+    for (int i = 0; i < no_vertex; i++)
+    {
+        if (detect_cycle_directed_dfs(visited, visited_dfs, i))
+            return true;
+    }
+
+    return false;
+}
+
+
+void Graph::topological_sort_dfs(vector<bool> &visited, int node, stack<item> &res)
+{
+    visited[node] = true;
+
+    for (auto it : adj_list[node])
+    {
+        if (!visited[it])
+        {
+            topological_sort_dfs(visited, it, res);
+        }
+    }
+    res.push(node);
+}
+
+vector<int> Graph::topological_sort_dfs_comp()
+{
+    vector<bool> visited(no_vertex, false);
+    stack<item> res;
+    vector<int> ans;
+
+    for (int i = 0; i < no_vertex; i++)
+    {
+        if (!visited[i])
+            topological_sort_dfs(visited, i, res);
+    }
+
+    while (!res.empty())
+    {
+        ans.push_back(res.top());
+        res.pop();
+    }
+
+    return ans;
+}
+
+vector<item> Graph::topological_sort_bfs() // kahn's algorithm
+{
+    vector<int> inDegree(no_vertex, 0);
+    vector<item> res;
+    queue<item> line;
+
+    for (int i = 0; i < no_vertex; i++)
+    {
+        for (auto it : adj_list[i])
+            inDegree[it]++;
+    }
+
+    for (int i = 0; i < no_vertex; i++)
+    {
+        if (inDegree[i] == 0)
+            line.push(i);
+    }
+
+    while (!line.empty())
+    {
+        int node = line.front();
+        res.push_back(node);
+        line.pop();
+
+        for (auto it : adj_list[node])
+        {
+            inDegree[it]--;
+
+            if (inDegree[it] == 0)
+                line.push(it);
+        }
+    }
+    return res;
+}

@@ -26,4 +26,11 @@ class Graph
         bool isCyclic_bfs();
         bool helper_cycle_dfs(int startIndex, int parent);
         bool isCyclic_dfs();
+        bool is_bipartite_bfs(int startIndex, vector<int> &coloured);
+        bool is_bipartit_bfs_component();
+        bool detect_cycle_directed_dfs(vector<bool> &visited, vector<bool> &visited_dfs, int startIndex);
+        bool detect_cycle_directed_dfs_comp();
+        void topological_sort_dfs(vector<bool> &visited, int node, stack<item> &res);
+        vector<int> topological_sort_dfs_comp();
+        vector<item> topological_sort_bfs(); // kahn's algorithm
 };
