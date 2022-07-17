@@ -1,68 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int helper(vector<vector<int>> &matrix, int index1, int index2, vector<vector<int>> &dp)
+bool is_divisible(int num, vector<int> &arr)
 {
-    int left, up;
-    if (index1 == 0 || index2 == 0)
+    for (int i = 0; i < arr.size(); i++)
     {
-        if (matrix[index1][index2] != -1)
-            return 1;
-        
-        return 0;
+        if (arr[i] % num != 0)
+            return false;
     }
-    
-    if (dp[index1][index2] != -1)
-        return dp[index1][index2];
-    
-    if (matrix[index1][index2] != -1)
-    {
-        left = 1 + helper(matrix, index1 - 1, index2, dp);
-        up = 1 + helper(matrix, index1, index2 - 1, dp);
-    }
-    
-    return left + up;
+    return true;
 }
 
-int main() 
+int minOperations(vector<int>& nums, vector<int>& numsDivide)
 {
-    int A = 5, B = 2;
-    int mid = (A - 1) / 2;
+    int res = 0;
+    bool flag = false;
     
-    vector<vector<int>> dp(A, vector<int> (A, -1));
-    vector<vector<int>> matrix(A, vector<int> (A, 0));
+    sort(numsDivide.begin(), numsDivide.end());
     
-    
-    for (int i = mid - B; i <= mid + B; i++)
+    for (int i = 0; i < nums.size(); i++)
     {
-        matrix[mid][i] = -1;
-    }
-    
-    for (int i = mid - B; i <= mid + B; i++)
-    {
-        matrix[i][mid] = -1;
-    }
-    
-    for (int i = mid - B; i <= mid + B; i++)
-    {
-        for (int j = mid - B; j <= mid + B; j++)
+        if (is_divisible(nums[i], numsDivide))
         {
-            if (i == j)
-                matrix[i][j] = -1;
-            
-            if (i + j == A - 1)
-                matrix[i][j] = -1;
+            flag = true;
+            break;
+        }
+        else 
+        {
+            res++;
         }
     }
     
+    if (!flag)
+        return -1;
+    
+    return res;
+}
 
-    for (int i = 0; i < A; i++)
-    {
-        for (int j = 0; j < A; j++)
-        {
-            cout << matrix[i][j] << " ";
-        }
-        cout << endl;
-    }
+int main()
+{
+    vector<int> nums = {2,3,2,4,3};
+    vector<int> numsDivide = {9,6,9,3,15};
+
+    sort(nums.begin(), nums.end());
+
+    cout << minOperations(nums, numsDivide) << endl;
     return 0;
 }
