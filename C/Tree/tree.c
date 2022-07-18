@@ -155,9 +155,9 @@ void balance_node(Node** root)
     if ((*root)->bfactor > 1)
     {
         if ((*root)->left->bfactor < 0) // Left-Right Rotation
-            left_rotate(&(*root)->left); //first root for LR
+            left_rotate(&(*root)->left); //first rotation to root->left
 
-        right_rotate(root); // 
+        right_rotate(root); // next rotation for root
     }
 
     else if ((*root)->bfactor < -1)
@@ -173,7 +173,7 @@ void balance_node(Node** root)
     
 }
 
-void insert(Node **root, int value)
+void insert_AVL(Node **root, int value)
 {
     if (*root == NULL)
     {
@@ -182,10 +182,10 @@ void insert(Node **root, int value)
     }
          
     if (value < (*root)->data)
-        insert(&(*root)->left, value);
+        insert_AVL(&(*root)->left, value);
     
     else 
-        insert(&(*root)->right, value);
+        insert_AVL(&(*root)->right, value);
     
     balance_node(root);
     

@@ -20,10 +20,18 @@ int main()
     // add_bst(&root, 48);
     // add_bst(&root, 36);
     // add_bst(&root, 42);
-    add_bst(&root, 3);
-    add_bst(&root, 2);
-    add_bst(&root, 1);
-    right_rotate(&root);
+    // add_bst(&root, 3);
+    // add_bst(&root, 2);
+    // add_bst(&root, 1);
+    // right_rotate(&root);
+
+    insert_AVL(&root, 35);
+    insert_AVL(&root, 33);
+    insert_AVL(&root, 42);
+    insert_AVL(&root, 10);
+    insert_AVL(&root, 14);
+    insert_AVL(&root, 19);
+    insert_AVL(&root, 5);
 
     preorder(root);
     return 0;

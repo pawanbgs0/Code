@@ -28,4 +28,4 @@ void left_rotate(Node** root);
 void right_rotate(Node** root);
 void update_bfactor(Node** root);
 void balance_node(Node** root);
-void insert(Node **root, int value);
+void insert_AVL(Node **root, int value);
