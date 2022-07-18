@@ -130,11 +130,11 @@ void right_rotate(Node** root)
 
     if (*root == NULL || (*root)->left == NULL)
         return;
-    
+
     temp = (*root)->left->right;
     (*root)->left->right = *root;
     *root = (*root)->left;
-    (*root)->left->right = temp;
+    (*root)->right->left = temp;
 }
 
 void update_bfactor(Node** root)
@@ -150,41 +150,43 @@ void balance_node(Node** root)
     if (*root == NULL)
         return;
     
-    update_bfactor(*root);
+    update_bfactor(root);
 
     if ((*root)->bfactor > 1)
     {
         if ((*root)->left->bfactor < 0) // Left-Right Rotation
-        {
             left_rotate(&(*root)->left); //first root for LR
-            right_rotate(*root); // 
-        }
-        else if ((*root)->bfactor < -1)
-        {
-            if ((*root)->right->bfactor < 0) // RL
-            {
-                right_rotate(&(*root)->right);
-                left_rotate(*root);
-            }
-        }
-        else 
-            return;
+
+        right_rotate(root); // 
     }
+
+    else if ((*root)->bfactor < -1)
+    {
+        if ((*root)->right->bfactor > 0) // RL
+            right_rotate(&(*root)->right);
+
+        left_rotate(root);
+    }
+
+    else 
+        return;
+    
 }
 
 void insert(Node **root, int value)
 {
     if (*root == NULL)
+    {
         *root = create_node(value);
+        return;
+    }
+         
+    if (value < (*root)->data)
+        insert(&(*root)->left, value);
     
     else 
-    {
-        if (value < (*root)->data)
-            insert(&(*root)->left, value);
-        
-        else 
-            insert(&(*root)->right, value);
-        
-        balance_node(root);
-    }
+        insert(&(*root)->right, value);
+    
+    balance_node(root);
+    
 }

@@ -17,12 +17,13 @@ int main()
     // preorder(root);
     // levelorder(root);
 
-    add_bst(&root, 48);
-    add_bst(&root, 36);
-    add_bst(&root, 42);
-    add_bst(&root, 98);
-    add_bst(&root, 64);
-    add_bst(&root, 32);
+    // add_bst(&root, 48);
+    // add_bst(&root, 36);
+    // add_bst(&root, 42);
+    add_bst(&root, 3);
+    add_bst(&root, 2);
+    add_bst(&root, 1);
+    right_rotate(&root);
 
     preorder(root);
     return 0;

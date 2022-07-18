@@ -25,5 +25,7 @@ int depth(Node* root);
 void bst(Node** root, item value);
 void add_bst(Node **root, item value);
 void left_rotate(Node** root);
+void right_rotate(Node** root);
+void update_bfactor(Node** root);
 void balance_node(Node** root);
 void insert(Node **root, int value);
