@@ -162,3 +162,57 @@ void Linked_List::dellast()
     temp->next = NULL;
     delete todelete;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void Linked_List::removeDuplicates()
+{
+	// add your logic here
+	Node* res, *rescurr, *current;
+	int temp;
+	bool flag = false;
+	
+	if (head == NULL)
+		return;
+	
+	
+	res = new Node(-1);
+	rescurr = res;
+	temp = head->data;
+	current = head;
+	
+	while (current->next != NULL && current->data == current->next->data)
+    {
+        current = current->next;
+    }
+    current = current->next;
+    rescurr->next = new Node(current->data);
+    rescurr = rescurr->next;
+    current = current->next;
+
+	while (current != NULL)
+	{	
+		if (current->data != temp)
+		{
+			rescurr->next = new Node(current->data);
+            rescurr = rescurr->next;
+		}
+		current = current->next;
+        if (current != NULL)
+		    temp = current->data;
+	}
+	
+	head = res->next;
+}

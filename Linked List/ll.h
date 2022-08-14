@@ -29,4 +29,9 @@ class Linked_List
         void addinmidafter(Node *pos, item data);
         void delfirst();
         void dellast();
+
+
+
+        void removeDuplicates();
 };
+

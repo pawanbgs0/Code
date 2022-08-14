@@ -1,49 +1,25 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-bool is_divisible(int num, vector<int> &arr)
-{
-    for (int i = 0; i < arr.size(); i++)
+ #include <bits/stdc++.h>
+ using namespace std;
+ 
+ bool is_valid(string s, int k)
     {
-        if (arr[i] % num != 0)
-            return false;
-    }
-    return true;
-}
-
-int minOperations(vector<int>& nums, vector<int>& numsDivide)
-{
-    int res = 0;
-    bool flag = false;
-    
-    sort(numsDivide.begin(), numsDivide.end());
-    
-    for (int i = 0; i < nums.size(); i++)
-    {
-        if (is_divisible(nums[i], numsDivide))
+        // sort(s.begin(), s.end());
+        
+        for (int i = 1; i < s.size(); i++)
         {
-            flag = true;
-            break;
+            int diff = abs(s[i - 1] - s[i]);
+            cout << "dif is " << diff << endl;
+            if (diff > k)
+                return false;
         }
-        else 
-        {
-            res++;
-        }
+        return true;
     }
     
-    if (!flag)
-        return -1;
-    
-    return res;
-}
 
 int main()
 {
-    vector<int> nums = {2,3,2,4,3};
-    vector<int> numsDivide = {9,6,9,3,15};
+    string s = "acfgbd";
 
-    sort(nums.begin(), nums.end());
-
-    cout << minOperations(nums, numsDivide) << endl;
+    cout << is_valid(s, 2);
     return 0;
 }

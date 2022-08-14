@@ -1,19 +1,9 @@
+import pyautogui as py
+import time
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+spam = 0
 
-
-
-
-
-        
-
-distance = 50
-
-# while distance > 0:
-#         pyautogui.drag(distance, 0, duration=0.5)   # move right
-#         distance -= 5
-#         pyautogui.drag(0, distance, duration=0.5)   # move down
-#         pyautogui.drag(-distance, 0, duration=0.5)  # move left
-#         distance -= 5
-#         pyautogui.write("hello")
-#         pyautogui.drag(0, -distance, duration=0.5)  # move up
+while spam < 1:
+    py.typewrite("Spamer!")
+    time.sleep(1)
+    py.press("return")
