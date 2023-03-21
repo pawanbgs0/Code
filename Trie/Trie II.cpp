@@ -3,7 +3,7 @@ using namespace std;
 
 class Node
 {
-    Node* link[26];
+    Node* link[26] = {NULL};
     int endWith;
     int prefixCount;
 

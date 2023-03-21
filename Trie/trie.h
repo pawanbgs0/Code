@@ -3,7 +3,7 @@ using namespace std;
 
 class Node
 {
-    Node* links[26]; // assuming all as lowercase
+    Node* links[26] = {NULL}; // assuming all as lowercase
     bool flag;
 
     public:
