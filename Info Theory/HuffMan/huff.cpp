@@ -415,3 +415,37 @@ string Huffman::decodeMessage(string messageCode)
     }
     return res;
 }
+
+vector<unsigned char> EndEncryption::aes_encrypt()
+{
+    vector<unsigned char> encrypted_data(data.size() + EVP_MAX_BLOCK_LENGTH);
+    int encrypted_length = 0;
+
+    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
+    EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, &key[0], NULL);
+    EVP_EncryptUpdate(ctx, &encrypted_data[0], &encrypted_length, &data[0], data.size());
+    int final_length = 0;
+    EVP_EncryptFinal_ex(ctx, &encrypted_data[encrypted_length], &final_length);
+    encrypted_length += final_length;
+    EVP_CIPHER_CTX_free(ctx);
+
+    encrypted_data.resize(encrypted_length);
+    return encrypted_data;
+}
+
+vector<unsigned char> EndEncryption::aes_decrypt()
+{
+    vector<unsigned char> decrypted_data(data.size() + EVP_MAX_BLOCK_LENGTH);
+    int decrypted_length = 0;
+
+    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
+    EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, &key[0], NULL);
+    EVP_DecryptUpdate(ctx, &decrypted_data[0], &decrypted_length, &data[0], data.size());
+    int final_length = 0;
+    EVP_DecryptFinal_ex(ctx, &decrypted_data[decrypted_length], &final_length);
+    decrypted_length += final_length;
+    EVP_CIPHER_CTX_free(ctx);
+
+    decrypted_data.resize(decrypted_length);
+    return decrypted_data;
+}
