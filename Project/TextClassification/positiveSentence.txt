@@ -1,0 +1,22 @@
+for i in range(len(negative_sent)):
+    words = negative_sent[i].split()
+    
+    j = 0
+    while j < len(words):
+        word = words[j]
+        
+        if word in negation_words:
+            k = j + 1
+            
+            while k < len(words) and not re.match(r'\W', words[k]):
+                k += 1
+            
+            for l in range(j + 1, k):
+                words[l] = 'NOT_' + words[l]
+                
+            j = k  # Skip over the words that were already modified
+        else:
+            j += 1  # Move to the next word if the current word is not a negation word
+    
+    # Join the modified words back into a sentence
+    negative_sent[i] = ' '.join(words)

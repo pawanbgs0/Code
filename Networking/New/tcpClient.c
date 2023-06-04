@@ -10,32 +10,11 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "parity.h"
+
 #define MAX_MSG 100
 
-/* 3 phases in the tcp/ip connections
-	-> connection establishment
-	-> data transfer
-	-> connection termination
-*/
 
-
-/* socket(int family, int type, int protocol) -> defines protocol and returns socket descriptor
-	if the return is +ve that means the protocol was defined correctly.
-
-	AF_INET -> Internet Protocols (Address Family)
-
-	SOCK_STREAM -> Stream Socket (type {connection oriented or connection less})
-
-	0 -> As only one protocol is available for each family and type. */
-
-/*
-	int bind(int sd, struct sockaddr *myaddr, int addrelen);
-	
-	sd (socked descriptor) -> it is the return of socket function.
-	myaddr: it is a pointer to an address structure containing local IP address & Port no.
-		struct sockaddr_in -> for tcp model
-	addrlen: it is the size of address structure
-*/
 
 int main(int argc, char *argv[])
 {
@@ -64,14 +43,21 @@ int main(int argc, char *argv[])
 		printf("Successfully created stream socket.\n");
 
 	/*connect to server*/
-    connect(sd, (struct sockaddr *)&servAddr, sizeof(servAddr));
-    printf("connected to server successfully\n");
+    int value = connect(sd, (struct sockaddr *)&servAddr, sizeof(servAddr));
+
+	if (value > 0)
+    	printf("connected to server successfully\n");
 
 	/*send data to server*/
     do
     {
         printf("Enter string to send to server: ");
         scanf("%s", buffer);
+
+		char bit = generateParityBit(buffer, strlen(buffer));
+		buffer[strlen(buffer)] = bit;
+
+		printf("%s", buffer);
 
         send(sd, buffer, strlen(buffer) + 1, 0);
         printf("data sent (%s)\n", buffer);

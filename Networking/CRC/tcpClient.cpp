@@ -1,4 +1,4 @@
-// TCP Socket Programming
+// TCP Socket Programming (sender)
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "crc.h"
 
 #define MAX_MSG 100
 
@@ -42,6 +44,7 @@ int main(int argc, char *argv[])
 	int sd, cliLen, newSd, n;
 	struct sockaddr_in servAddr, cliAddr;
 	char buffer[MAX_MSG];
+    string tail = "1101";
 	
 	if (argc < 3) // name of program, ip address, port number
 	{
@@ -54,38 +57,48 @@ int main(int argc, char *argv[])
 	servAddr.sin_port = htons(atoi(argv[2])); // atoi -> string to integer. // -> htones -> works only on int, (host to network short) converts into 16-bit binary number
 	memset(&(servAddr.sin_zero), '\0', 8); // zero the rest of the struct.sin_zero
 
+    cliAddr.sin_family = AF_INET;
+    cliAddr.sin_addr.s_addr = INADDR_ANY;
+    cliAddr.sin_port = htons(0);
+
 	sd = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (sd > 0)
 		printf("Successfully created stream socket.\n");
 
-	bind(sd, (struct sockaddr*)&servAddr, sizeof(servAddr));
-	printf("Bound local port successfully\n");
+	/*connect to server*/
+    int value = connect(sd, (struct sockaddr *)&servAddr, sizeof(servAddr));
 
-	listen(sd, 5); // server is listening connection request and 5 is the number of clients allowed
+	if (value > 0)
+    	printf("connected to server successfully\n");
 
-	while(1)
-	{
-		printf("Waiting for coient connection on TCP Port %u\n", atoi(argv[2]));
+	/*send data to server*/
+    do
+    {
+        string msg;
+        printf("Enter string to send to server: ");
+        cin >> msg;
+        cout << "message is " << msg << endl;
+        string crc = getCRC(msg, tail);
+        cout << "crc is " << crc << endl;
 
-		/*wait for the client connection*/
-		cliLen = sizeof(cliAddr);
-		newSd = accept(sd, (struct sockaddr *)&cliAddr, (socklen_t*)&cliLen);
-		printf("recieved connection from host (IP %s, TCP Port %d): %s\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port), buffer);
+        msg += crc;
 
-		do 
-		{
-			memset(buffer, 0, MAX_MSG);
-			n = recv(newSd, buffer, MAX_MSG, 0);
-			buffer[n] = '\n';
-			printf("recieved from host [IP %s, TCP port %d] : %s\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port), buffer);
-		}while(abs(strcmp(buffer, "quit")));
+        for (int i = 0; i < msg.size(); i++)
+        {
+            buffer[i] = msg[i];
+        }
+		msg = "";
 
-		/* close client connection*/
-		printf("closing connection with host [IP %s, TCP port %d]\n", inet_ntoa(cliAddr.sin_addr), ntohs(cliAddr.sin_port));
+        // scanf("%s", buffer);
 
-		close(newSd);
-	}
+        send(sd, buffer, strlen(buffer) + 1, 0);
+        printf("data sent (%s)\n", buffer);
+    } while (strcmp(buffer, "quit"));
+    
 	
+	printf("closing connection with the server\n");
+    close(sd);
+
 	return 0;	
 }
